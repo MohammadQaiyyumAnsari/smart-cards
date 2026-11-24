@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Digital Visiting Card</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+    body {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+    }
+    .card {
+      background: #ffffff;
+      width: 100%;
+      max-width: 400px;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+      text-align: center;
+    }
+    .banner {
+      height: 115px;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    }
+    .avatar-wrap {
+      margin-top: -58px;
+      display: flex;
+      justify-content: center;
+    }
+    .avatar {
+      width: 116px;
+      height: 116px;
+      border-radius: 50%;
+      border: 5px solid #ffffff;
+      object-fit: cover;
+      background: #e2e8f0;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+    }
+    .info { padding: 14px 24px 24px; }
+    .name { font-size: 22px; font-weight: 700; color: #0f172a; }
+    .role { font-size: 13.5px; font-weight: 500; color: #2563eb; margin-top: 2px; }
+    .company { font-size: 14px; font-weight: 600; color: #475569; margin-top: 4px; }
+    .bio { font-size: 12.5px; color: #64748b; margin-top: 10px; line-height: 1.5; }
+
+    /* मुख्य Save Contact बटन */
+    .save-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      margin-top: 20px;
+      padding: 14px;
+      background: #16a34a;
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 600;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(22, 163, 74, 0.3);
+      transition: transform 0.15s ease, background 0.2s ease;
+    }
+    .save-btn:hover { background: #15803d; transform: translateY(-1px); }
+    .save-btn:active { transform: scale(0.98); }
+
+    /* क्विक एक्शन ग्रिड */
+    .actions {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .action-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px;
+      background: #f1f5f9;
+      color: #1e293b;
+      text-decoration: none;
+      font-size: 13.5px;
+      font-weight: 600;
+      border-radius: 12px;
+      transition: background 0.2s ease;
+    }
+    .action-btn:hover { background: #e2e8f0; }
+
+    .address-box {
+      margin-top: 16px;
+      padding: 12px;
+      background: #f8fafc;
+      border-radius: 12px;
+      font-size: 12px;
+      color: #475569;
+      line-height: 1.5;
+    }
+    .footer {
+      padding: 12px;
+      background: #f1f5f9;
+      font-size: 11px;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <div class="banner"></div>
+    <div class="avatar-wrap">
+      <!-- क्लाइंट की फोटो या लोगो का नाम यहाँ डालें -->
+      <img id="clientPhoto" class="avatar" src="https://via.placeholder.com/150" alt="Profile Photo" />
+    </div>
+
+    <div class="info">
+      <h1 id="clientName" class="name"></h1>
+      <p id="clientRole" class="role"></p>
+      <p id="clientCompany" class="company"></p>
+      <p id="clientBio" class="bio"></p>
+
+      <!-- 1-Click Save Contact बटन -->
+      <button class="save-btn" onclick="downloadVCard()">
+        📥 Save Contact to Phone
+      </button>
+
+      <!-- अन्य जरूरी लिंक्स -->
+      <div class="actions">
+        <a id="callLink" class="action-btn" href="#">📞 Call Now</a>
+        <a id="waLink" class="action-btn" href="#" target="_blank">💬 WhatsApp</a>
+        <a id="mailLink" class="action-btn" href="#">✉️ Email</a>
+        <a id="mapLink" class="action-btn" href="#" target="_blank">📍 Location</a>
+      </div>
+
+      <div id="clientAddress" class="address-box"></div>
+    </div>
+
+    <div class="footer">Smart NFC Digital Card</div>
+  </div>
+
+  <script>
+    // ==========================================
+    // हर नए क्लाइंट के लिए सिर्फ नीचे की डिटेल्स बदलें
+    // ==========================================
+    const client = {
+      firstName: "Ramesh",
+      lastName: "Sharma",
+      role: "Founder & Interior Designer",
+      company: "Sharma Design Studio",
+      bio: "Complete Home & Office Interior Solutions | Modular Kitchen & Turnkey Projects",
+      phone: "+919876543210",
+      whatsapp: "919876543210", // बिना '+' के देश कोड सहित
+      email: "contact@sharmadesign.in",
+      website: "https://sharmadesign.in",
+      address: "Shop 12, Main Market Road, Nagpur, Maharashtra 440001",
+      mapUrl: "https://maps.google.com/?q=Nagpur",
+      photoUrl: "photo.jpg" // फोल्डर में रखी फोटो का नाम (या ऑनलाइन लिंक)
+    };
+
+    // पेज पर डेटा ऑटोमैटिक सेट करना
+    const fullName = `${client.firstName} ${client.lastName}`.trim();
+    document.title = `${fullName} - Digital Visiting Card`;
+    document.getElementById("clientName").innerText = fullName;
+    document.getElementById("clientRole").innerText = client.role;
+    document.getElementById("clientCompany").innerText = client.company;
+    document.getElementById("clientBio").innerText = client.bio;
+    document.getElementById("clientAddress").innerText = "🏢 " + client.address;
+    document.getElementById("clientPhoto").src = client.photoUrl;
+
+    document.getElementById("callLink").href = `tel:${client.phone}`;
+    document.getElementById("waLink").href = `https://wa.me/${client.whatsapp}?text=${encodeURIComponent("Hello " + fullName + ", I got your digital card.")}`;
+    document.getElementById("mailLink").href = `mailto:${client.email}`;
+    document.getElementById("mapLink").href = client.mapUrl;
+
+    // 1-Click vCard (.vcf) जनरेट और डाउनलोड करने का फंक्शन
+    function downloadVCard() {
+      const vcard = [
+        "BEGIN:VCARD",
+        "VERSION:3.0",
+        `N:${client.lastName};${client.firstName};;;`,
+        `FN:${fullName}`,
+        `ORG:${client.company}`,
+        `TITLE:${client.role}`,
+        `TEL;TYPE=CELL,VOICE:${client.phone}`,
+        `EMAIL;TYPE=PREF,INTERNET:${client.email}`,
+        `URL:${client.website}`,
+        `ADR;TYPE=WORK:;;${client.address};;;;`,
+        "END:VCARD"
+      ].join("\n");
+
+      const blob = new Blob([vcard], { type: "text/vcard;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${fullName.replace(/\s+/g, "_")}.vcf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+  </script>
+</body>
+</html>

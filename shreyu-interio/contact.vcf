@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Interio;Shreyu;;;
+FN:Shreyu Interio
+ORG:Shreyu Interio
+TITLE:Interior Design & Turnkey Solutions
+TEL;TYPE=CELL,VOICE:+919876543211
+EMAIL;TYPE=PREF,INTERNET:info@shreyuinterio.com
+URL:https://shreyuinterio.com
+ADR;TYPE=WORK:;;Nagole, Hyderabad, Telangana 500068;;;;
+END:VCARD

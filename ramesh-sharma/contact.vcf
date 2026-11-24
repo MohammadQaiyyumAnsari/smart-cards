@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Sharma;Ramesh;;;
+FN:Ramesh Sharma
+ORG:Sharma Enterprises
+TITLE:Managing Director
+TEL;TYPE=CELL,VOICE:+919876543210
+EMAIL;TYPE=PREF,INTERNET:ramesh@sharmaenterprises.in
+URL:https://sharmaenterprises.in
+ADR;TYPE=WORK:;;Main Market Road, Nagpur, Maharashtra 440001;;;;
+END:VCARD
